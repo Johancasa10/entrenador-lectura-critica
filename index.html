@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Entrenador de lectura crítica: Ramírez Cedillo (2007)</title>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--ink:#17233b;--mut:#5b6678;--line:#d5dbe4;--ok:#1b7a57;--okbg:#e3f3ec;--bad:#b3392f;--badbg:#fbe9e7;--acc:#2f4b9b;--accbg:#e8edfa;--l1:#6a8caf;--l2:#2f4b9b;--l3:#6b2f7a;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10151f;--card:#1a2232;--ink:#e8ecf4;--mut:#9aa6ba;--line:#2e3a50;--ok:#58c79b;--okbg:#14352a;--bad:#f08a80;--badbg:#3a1d1b;--acc:#8fa8ee;--accbg:#1d2745;--l1:#8fb0d3;--l2:#8fa8ee;--l3:#c58ad6}}
+:root[data-theme="dark"]{--bg:#10151f;--card:#1a2232;--ink:#e8ecf4;--mut:#9aa6ba;--line:#2e3a50;--ok:#58c79b;--okbg:#14352a;--bad:#f08a80;--badbg:#3a1d1b;--acc:#8fa8ee;--accbg:#1d2745;--l1:#8fb0d3;--l2:#8fa8ee;--l3:#c58ad6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+h1{font:700 1.45rem/1.25 Georgia,"Iowan Old Style",serif;margin:0 0 4px}
+.sub{color:var(--mut);font-size:.9rem;margin:0 0 16px}
+.rail{display:flex;gap:5px;margin:0 0 18px}
+.rail i{flex:1;height:7px;border-radius:4px;background:var(--line)}
+.rail i.done{background:var(--acc)}.rail i.now{background:var(--ink)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;border-left:6px solid var(--lc,var(--acc))}
+.lvl{font-weight:600;font-size:.85rem;color:var(--lc);margin:0 0 6px}
+.q{font:600 1.15rem/1.45 Georgia,"Iowan Old Style",serif;margin:0 0 14px}
+.opt{display:block;width:100%;text-align:left;font:inherit;color:inherit;background:var(--card);border:1.5px solid var(--line);border-radius:8px;padding:11px 13px;margin:0 0 9px;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--acc)}
+.opt:focus-visible,button:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.opt:disabled{cursor:default}
+.opt.ok{background:var(--okbg);border-color:var(--ok)}
+.opt.bad{background:var(--badbg);border-color:var(--bad)}
+.opt .w{display:block;margin-top:6px;font-size:.9rem;color:var(--mut)}
+.opt .tag{font-weight:700}
+.opt.ok .tag{color:var(--ok)}.opt.bad .tag{color:var(--bad)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.btn{font:inherit;font-weight:600;border-radius:8px;padding:10px 16px;border:1.5px solid var(--acc);background:var(--acc);color:#fff;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--acc)}
+.btn:disabled{opacity:.45;cursor:default}
+.hint{margin-top:10px;padding:10px 12px;background:var(--accbg);border-radius:8px;font-size:.92rem}
+.src{color:var(--mut);font-size:.85rem;margin-top:10px}
+textarea{width:100%;min-height:140px;font:inherit;color:inherit;background:var(--bg);border:1.5px solid var(--line);border-radius:8px;padding:10px;resize:vertical}
+.rub label{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.rub input{margin-top:5px;width:18px;height:18px;flex:none}
+table{width:100%;border-collapse:collapse;font-size:.92rem;margin:8px 0}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.big{font:700 1.7rem Georgia,serif;margin:4px 0}
+.note{color:var(--mut);font-size:.85rem;margin-top:18px}
+@media(prefers-reduced-motion:no-preference){.opt{transition:border-color .15s}}
+</style>
+</head>
+<body>
+<main>
+<h1>Entrenador de lectura crítica</h1>
+<p class="sub">Ramírez Cedillo (2007), «El proceso de privatización». Las páginas citadas son las impresas en la revista (97-114).</p>
+<div class="rail" id="rail" aria-hidden="true"></div>
+<section id="app" aria-live="polite"></section>
+<p class="note">Todo el contenido sale del artículo. Si dudas de una cifra o una página, verifícala contra el PDF.</p>
+</main>
+<script>
+const LV={lit:{n:"Nivel literal",c:"var(--l1)"},inf:{n:"Nivel inferencial",c:"var(--l2)"},cri:{n:"Nivel crítico",c:"var(--l3)"}};
+const Q=[
+{lv:"lit",topic:"Cifras sobre empresas públicas",q:"¿Cuántas empresas públicas llegó a tener el Estado mexicano en 1982?",
+hint:"Es la cifra más alta de la serie histórica que da el autor en los antecedentes.",src:"p. 98",
+o:[["36",0,"Es la cifra de 1940, ligada al auge cardenista, no la de 1982."],["1,155",1,"Correcto. El artículo dice que el número llegó a ser hasta de 1,155 en 1982."],["Más de 2,000",0,"No aparece en el artículo."],["Unas 400",0,"No aparece en el artículo."]]},
+{lv:"lit",topic:"Evolución de la deuda externa",q:"¿Qué porcentaje del PIB representaba la deuda externa en 1993, según el texto?",
+hint:"Es el valor al que baja desde el máximo de 1986-1987, antes de la crisis de 1994-1995.",src:"p. 105",
+o:[["32.5%",0,"Es el valor de 1982, el punto de partida de la serie."],["60%",0,"Es el nivel aproximado de 1986-1987, el máximo, no el de 1993."],["19.5%",1,"Correcto. Es el valor que el autor da para 1993 tras las renegociaciones."],["12.8%",0,"Es el saldo promedio trimestral de 2003, no el de 1993."]]},
+{lv:"inf",topic:"Efecto fiscal de corto plazo",q:"El autor sostiene que la venta de empresas del Estado alivia el déficit solo de forma temporal. ¿En qué se apoya?",
+hint:"Fíjate en cuándo el artículo dice que la venta tiene efectos positivos para el déficit.",src:"p. 101",
+o:[["En que la venta solo mejora el déficit en el momento en que se recibe el pago.",1,"Correcto. Lo afirma al comparar el déficit del gobierno federal con los ingresos extraordinarios de 1991, 1992 y 1994."],["En que las empresas privatizadas dejan de pagar impuestos.",0,"Contradice el texto: el artículo espera que las nuevas empresas privadas paguen impuestos (p. 100)."],["En que la deuda externa sube justo después de cada venta.",0,"El artículo no establece esa relación."],["En que el gobierno federal dejó de transferir recursos a las paraestatales.",0,"El texto habla de transferencias a seguridad social, no de ese motivo (p. 102)."]]},
+{lv:"inf",topic:"Deuda externa e interna",q:"La deuda total de 2003 (33.45% del PIB) es similar a la de 1994, pero la externa bajó de 22.7% a 12.8%. ¿Qué infiere el autor?",
+hint:"Mira qué ocurrió con la deuda interna mientras bajaba la externa.",src:"pp. 107 y 109",
+o:[["Que la deuda se eliminó gracias a las privatizaciones.",0,"El artículo dice lo contrario: sigue habiendo niveles similares a los de los noventa."],["Que en cierta medida solo se cambió deuda externa por deuda interna.",1,"Correcto. Lo dice al señalar que la deuda interna crece de forma constante desde 1996."],["Que la crisis de 1994 no afectó la deuda.",0,"El texto dice que en 1994 la disminución de la deuda rompe su tendencia y vuelve a subir (p. 106)."],["Que la deuda contingente desapareció.",0,"El artículo la describe como parte de la deuda, y no la da por extinguida (p. 107)."]]},
+{lv:"cri",topic:"Crítica al argumento sobre eficiencia",q:"El autor concluye que «la privatización no mejora la administración» de las empresas (p. 111). ¿Cuál es la debilidad principal de ese argumento?",
+hint:"Piensa qué tipo de datos presenta el artículo: ¿hay indicadores de productividad, costos o precios?",src:"pp. 99 y 111",
+o:[["Usa datos de fuentes no oficiales.",0,"Falso: las gráficas usan datos de la Secretaría de Hacienda y del Banco de México."],["No presenta indicadores de desempeño de las empresas y descarta sin contrastar los estudios que cita en contra (nota 8).",1,"Correcto. La conclusión se apoya en argumentos y casos, no en medidas de productividad, costos o precios."],["Ignora por completo el tema de la deuda externa.",0,"Falso: dedica una sección entera a la deuda pública."],["Solo analiza el periodo posterior al año 2000.",0,"Falso: las series gráficas arrancan en 1977."]]},
+{lv:"cri",topic:"Crítica a la comparación de activos y pasivos",q:"El autor concluye que cambiar activos por pasivos no funcionó, comparando la deuda de 1994 con la de 2003. ¿Qué limita esa comparación?",
+hint:"Pregúntate qué falta para saber si el país quedó mejor o peor que sin privatizar.",src:"pp. 106, 109 y 111",
+o:[["Compara dos puntos en el tiempo, sin valorar los activos vendidos ni un escenario sin privatización; además 1994 es un año de crisis.",1,"Correcto. Sin esa valoración ni contrafactual, el texto muestra qué pasó pero no prueba por qué."],["Mide la deuda en pesos nominales y no como porcentaje del PIB.",0,"Falso: las cifras del artículo están expresadas como porcentaje del PIB."],["Ignora la deuda interna.",0,"Falso: la analiza y la compara con la externa (p. 107)."],["No menciona la crisis de 1994-1995.",0,"Falso: la describe con detalle (p. 106)."]]}
+];
+const OPEN=[
+{q:"Pregunta abierta 1. ¿La evidencia del artículo respalda que la privatización no mejoró las finanzas públicas? Responde en 5 a 8 líneas, con al menos dos cifras y su página.",
+hint:"Separa corto y largo plazo, y revisa a qué atribuye el texto el balance negativo desde 1995.",
+rub:["Cita al menos dos cifras o datos del artículo, con su página.","Distingue el efecto de corto plazo (venta) del de largo plazo.","Reconoce que el artículo atribuye parte del deterioro a otras causas, como las pensiones (p. 102).","Señala qué evidencia faltaría, por ejemplo un contrafactual o el cálculo con la fórmula de Cifuentes (nota 10)."]},
+{q:"Pregunta abierta 2. El autor propone una alternativa a la privatización. ¿Cuál es y qué tan demostrada está en el texto? Responde en 5 a 8 líneas.",
+hint:"Revisa las últimas páginas y la nota 22.",
+rub:["Identifica la propuesta: tipo de cambio flexible, política fiscal contracíclica y crecimiento económico (p. 112).","Reconoce que el artículo remite a otros trabajos del autor para sustentarla (nota 22).","Distingue entre lo que el autor afirma y lo que demuestra.","Propone al menos una evidencia que haría falta para evaluarla."]}
+];
+const S={i:0,ans:[],hints:0,hintSeen:{},open:[],txt:["",""]};
+const N=Q.length+OPEN.length,app=document.getElementById("app"),rail=document.getElementById("rail");
+function paintRail(){rail.innerHTML=Array.from({length:N},(_,k)=>`<i class="${k<S.i?"done":k===S.i?"now":""}"></i>`).join("")}
+function hintBtn(){return `<button class="btn ghost" id="hb">Pedir pista</button><div id="hbox"></div>`}
+function wireHint(text){const b=document.getElementById("hb");b.onclick=()=>{if(!S.hintSeen[S.i]){S.hintSeen[S.i]=1;S.hints++}document.getElementById("hbox").innerHTML=`<div class="hint"><b>Pista:</b> ${text}</div>`;b.disabled=true}}
+function showQ(){
+paintRail();const q=Q[S.i],L=LV[q.lv];
+app.innerHTML=`<div class="card" style="--lc:${L.c}"><p class="lvl">${L.n}, pregunta ${S.i+1} de 6</p><p class="q">${q.q}</p><div id="opts">${q.o.map((o,k)=>`<button class="opt" data-k="${k}">${o[0]}</button>`).join("")}</div><div class="row">${hintBtn()}</div><div id="next"></div></div>`;
+wireHint(q.hint);
+document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>pick(+b.dataset.k));
+}
+function pick(k){
+const q=Q[S.i],good=q.o[k][1]===1;S.ans[S.i]={k,good,topic:q.topic,lv:q.lv,q:q.q,chosen:q.o[k][0]};
+document.querySelectorAll(".opt").forEach((b,j)=>{const o=q.o[j];b.disabled=true;
+b.classList.add(o[1]?"ok":(j===k?"bad":""));
+b.innerHTML=`${o[0]}<span class="w"><span class="tag">${o[1]?"Correcta. ":"Incorrecta. "}</span>${o[2]}</span>`});
+document.getElementById("next").innerHTML=`<p class="src">${good?"Acertaste.":"No acertaste esta vez."} Dónde mirar: ${q.src}.</p><div class="row"><button class="btn" id="nx">${S.i<5?"Siguiente pregunta":"Pasar a las preguntas abiertas"}</button></div>`;
+document.getElementById("nx").onclick=()=>{S.i++;S.i<6?showQ():showOpen()};
+document.getElementById("nx").focus();
+}
+function showOpen(){
+paintRail();const k=S.i-6,o=OPEN[k];
+app.innerHTML=`<div class="card" style="--lc:var(--acc)"><p class="lvl">Autoevaluación, pregunta abierta ${k+1} de 2</p><p class="q">${o.q}</p><textarea id="ta" aria-label="Tu respuesta">${S.txt[k]}</textarea><div class="row">${hintBtn()}<button class="btn" id="rv">Mostrar rúbrica</button></div><div id="rb"></div></div>`;
+wireHint(o.hint);
+document.getElementById("rv").onclick=()=>{S.txt[k]=document.getElementById("ta").value;document.getElementById("ta").readOnly=true;
+document.getElementById("rv").disabled=true;
+document.getElementById("rb").innerHTML=`<p class="src">Compara tu respuesta con cada criterio y marca los que cumpliste, con honestidad.</p><div class="rub">${o.rub.map((r,j)=>`<label><input type="checkbox" data-j="${j}"><span>${r}</span></label>`).join("")}</div><div class="row"><button class="btn" id="go">${k<1?"Siguiente pregunta abierta":"Ver mi resultado"}</button></div>`;
+document.getElementById("go").onclick=()=>{S.open[k]={n:[...document.querySelectorAll(".rub input")].filter(c=>c.checked).length,miss:o.rub.filter((r,j)=>!document.querySelectorAll(".rub input")[j].checked)};S.i++;S.i<8?showOpen():showEnd()}}
+}
+function showEnd(){
+paintRail();rail.innerHTML=Array.from({length:N},()=>'<i class="done"></i>').join("");
+const ok=S.ans.filter(a=>a.good).length,op=S.open[0].n+S.open[1].n,pct=ok/6*.6+op/8*.4;
+const lvl=pct>=.8?"Dominio alto":pct>=.55?"Dominio medio":"Dominio inicial";
+const msg=pct>=.8?"Lees el artículo con precisión y con ojo crítico.":pct>=.55?"Tienes la base; refuerza los temas fallados de la bitácora.":"Vuelve al artículo, por las páginas indicadas, y repite el entrenamiento.";
+const by=["lit","inf","cri"].map(l=>`<tr><td>${LV[l].n}</td><td>${S.ans.filter(a=>a.lv===l&&a.good).length} de 2</td></tr>`).join("");
+const fails=S.ans.filter(a=>!a.good);
+const log=fails.length?`<table><tr><th>Tema fallado</th><th>Nivel</th><th>Elegiste</th></tr>${fails.map(a=>`<tr><td>${a.topic}</td><td>${LV[a.lv].n.replace("Nivel ","")}</td><td>${a.chosen}</td></tr>`).join("")}</table>`:"<p>Sin temas fallados en las preguntas de opción múltiple.</p>";
+const miss=S.open.flatMap((o,k)=>o.miss.map(m=>`<li>Abierta ${k+1}: ${m}</li>`)).join("");
+app.innerHTML=`<div class="card" style="--lc:var(--acc)"><p class="lvl">Resultado final</p><p class="big">${lvl}</p><p>${msg}</p>
+<table><tr><th>Componente</th><th>Resultado</th></tr><tr><td>Opción múltiple</td><td>${ok} de 6</td></tr>${by}<tr><td>Preguntas abiertas (autoevaluación)</td><td>${op} de 8 criterios</td></tr><tr><td>Pistas usadas</td><td>${S.hints}</td></tr></table>
+<h2 style="font:700 1.05rem Georgia,serif;margin:18px 0 4px">Registro de temas fallados</h2>${log}
+${miss?`<h2 style="font:700 1.05rem Georgia,serif;margin:18px 0 4px">Criterios de rúbrica que faltaron</h2><ul>${miss}</ul>`:""}
+<p class="src">El nivel pondera 60% la opción múltiple y 40% la autoevaluación.</p>
+<div class="row"><button class="btn" id="rs">Reiniciar entrenamiento</button></div></div>`;
+document.getElementById("rs").onclick=()=>{Object.assign(S,{i:0,ans:[],hints:0,hintSeen:{},open:[],txt:["",""]});showQ()};
+}
+showQ();
+</script>
+</body>
+</html>
